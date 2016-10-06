@@ -1,0 +1,243 @@
+# this is an example of the Uber API
+# as a demonstration of an API spec in YAML
+swagger: '2.0'
+info:
+  title: Simulador API
+  description: Simulador backend API
+  version: "1.0.1"
+# the domain of the service
+host: api.simulador.com
+# array of all schemes that your API supports
+schemes:
+  - https
+# will be prefixed to all paths
+basePath: /v1
+produces:
+  - application/json
+paths:
+  /datos:
+    get:
+      summary: Datos combobox 
+      description: |
+        El datos endpoint trae los datos con sus ids para llenar cada combobox de la pagina al ser cargada por primera vez.
+      tags:
+        - Datos
+      responses:
+        200:
+          description: Array de datos
+          schema:
+            type: array
+            items:
+              $ref: '#/definitions/Datos'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/Error'
+  /simulador:
+   post:
+     summary: Envia información general del crédito.
+     description: Envia la información para ser simulada.
+     tags:
+       - Simular
+     parameters:
+       - name: simulador
+         in: body
+         description: Información
+         required: true
+         schema:
+           $ref: '#/definitions/Simulacro'
+     responses:
+       200:
+         description: Retonar los valores del simulacro.
+         schema:
+           $ref: '#/definitions/Dividendo'
+       500:
+         description: Error inesperado.
+         schema:
+           $ref: '#/definitions/Error'
+  /contactos:
+   post:
+     summary: Solicita un ejecutivo .
+     description: Envia la datos de contacto para que un ejecutivo se comunique con el cliente.
+     tags:
+       - Contacto
+     parameters:
+       - name: contactos
+         in: body
+         description: Datos de contacto
+         required: true
+         schema:
+           $ref: '#/definitions/Contacto'
+     responses:
+       200:
+         description: Retonar id de cotizacion.
+         schema:
+           $ref: '#/definitions/Cotizacion'
+       500:
+         description: Error inesperado
+         schema:
+           $ref: '#/definitions/Error'          
+definitions:
+  Datos:
+    type: object
+    properties:
+      tipoFinanciamiento:
+        type: object
+        properties:
+          id:
+            type: string
+            description: id para ocupar en combobox.
+          descripcion: 
+            type: string
+            description: informacion a mostrar.
+        description: Tipos de financiamientos para elegir.
+      tipoPropiedad:
+        type: object
+        properties:
+          id:
+            type: string
+            description: id para ocupar en combobox.
+          descripcion: 
+            type: string
+            description: informacion a mostrar.
+        description: Tipos de propiedades para elegir.  
+      antiguedad:
+        type: object
+        properties:
+          id:
+            type: string
+            description: id para ocupar en combobox.
+          descripcion: 
+            type: string
+            description: informacion a mostrar.
+        description: antiguedad de la casa elegida para financiar.  
+  Simulacro:
+     type: object
+     properties:
+       rutSolicitante:
+         type: string
+         description: Rut del solicitante.
+       financiamiento:
+         type: string
+         description: Tipo de financiamiento.
+       propiedad:
+         type: string
+         description: Tipo de propiedad.
+       antiguedad:
+         type: string
+         description: Si la propiedad es Usada o Nueva.
+       moneda:
+         type: string
+         description: Tipo de moneda (UF o Pesos).
+       valor:
+         type: number
+         format: double
+         description: Valor de la Propiedad.
+       montoSolicitado:
+         type: number
+         format: double
+         description: Monto solicitado.
+       porcentaje:
+         type: number
+         format: double
+         description: Porcentaje del financiamiento.
+       plazons:
+         type: integer
+         description: Cantidad de años para pagar.
+       dfl2:
+         type: boolean
+         description: algo. 
+  Contacto:
+    type: object
+    properties:
+     nombre:
+       type: string
+       description: nombre del solicitante.
+     paterno:
+       type: string
+       description: apellido paterno del solicitante.   
+     materno:
+       type: string
+       description: apellido materno del solicitante.  
+     tipoContacto:
+       type: string
+       description: Quiero que me contacten por.
+     fono: 
+       type: string
+       description: telefono del solicitante
+     mail: 
+       type: string
+       description: mail del solicitante.
+     entrega:
+       type: string
+       format: date
+       description: fecha de entrega de la propiedad.
+     comentario:
+       type: string
+       description: comentarios
+  Cotizacion:
+    type: object
+    properties:
+      idCotizacion: 
+        type: string
+        description: ide de cotizacion generada
+  Dividendo:
+   type: object
+   properties:
+     interes:
+       type: number
+       format: double
+       description: Tasa de interés.
+     dividendo:
+       type: number
+       format: double
+       description: Valor del dividendo.
+     desgravamen:
+       type: number
+       format: double
+       description: Valor seguro desgravamen.
+     incendioTerremoto:
+       type: number
+       format: double
+       description: Valor seguro de incendio y terremoto.
+     totalUF:
+       type: number
+       format: double
+       description: Valor total del dividendo en UF.
+     totalPesos:
+       type: number
+       format: double
+       description: Valor total del dividendo en Pesos.
+     cargaAnual:
+       type: number
+       format: double
+       description: Porcentaje Carga Anual Equivalente.
+     renta:
+       type: number
+       format: double
+       description: Renta Solicitada.
+     costoFinal:
+       type: number
+       format: double
+       description: Costo Final del Crédito.
+     tasacion:
+       type: number
+       format: double
+       description: Costo de la tasación.
+     estudioTitulo:
+       type: number
+       format: double
+       description: Costo Estudio de Título.
+     borrador:
+       type: number
+       format: double      
+  Error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string

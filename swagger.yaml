@@ -1,0 +1,123 @@
+---
+swagger: "2.0"
+info:
+  version: "0.0.1"
+  title: "rest-labs"
+basePath: "/"
+schemes:
+- "http"
+produces:
+- "application/json"
+paths:
+  /users:
+    get:
+      description: "Obtiene todos los usuarios"
+      operationId: "usersGET"
+      parameters: []
+      responses:
+        200:
+          description: "Listado de usuarios"
+          schema:
+            type: "array"
+            items:
+              $ref: "#/definitions/User"
+        500:
+          description: "Error general"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Default"
+    post:
+      description: "Guarda un usuario"
+      operationId: "usersPOST"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Datos de usuario"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Usuario creado"
+          schema:
+            $ref: "#/definitions/User"
+        500:
+          description: "Error general"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Default"
+    put:
+      description: "Modifica un usuario"
+      operationId: "usersPUT"
+      parameters:
+      - in: "body"
+        name: "user"
+        description: "Datos de usuario"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        200:
+          description: "Usuario modificado"
+          schema:
+            $ref: "#/definitions/User"
+        500:
+          description: "Error general"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Default"
+  /users/{id}:
+    get:
+      description: "Obtiene un usuario especifico"
+      operationId: "usersIdGET"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Id de usuario especifico"
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "Usuario especifico"
+          schema:
+            $ref: "#/definitions/User"
+        500:
+          description: "Error general"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Default"
+    delete:
+      description: "Elimina un usuario especifico"
+      operationId: "usersIdDELETE"
+      parameters:
+      - name: "id"
+        in: "path"
+        description: "Id de usuario especifico"
+        required: true
+        type: "number"
+      responses:
+        200:
+          description: "Usuario especifico"
+          schema:
+            $ref: "#/definitions/inline_response_200"
+        500:
+          description: "Error general"
+          schema:
+            $ref: "#/definitions/Error"
+      x-swagger-router-controller: "Default"
+definitions:
+  User:
+    type: "object"
+    properties:
+      id:
+        type: "integer"
+        description: "Id del usuario"
+      desc:
+        type: "string"
+        description: "Descripcion del usuario"
+  Error:
+    type: "string"
+  inline_response_200:
+    properties:
+      msg:
+        type: "string"
