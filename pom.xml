@@ -20,6 +20,7 @@
 	<properties>		
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+		<docker.image.dockerhub.user>camilomolina</docker.image.dockerhub.user>
 		<docker.image.prefix>spring-boot-labs</docker.image.prefix>
 		<java.version>1.7</java.version>
 	</properties>
@@ -56,7 +57,7 @@
 				<artifactId>docker-maven-plugin</artifactId>
 				<version>0.4.9</version>
 				<configuration>
-					<imageName>${docker.image.prefix}/${project.artifactId}</imageName>
+					<imageName>${docker.image.dockerhub.user}/${docker.image.prefix}_${project.artifactId}:${project.version}</imageName>
 					<dockerDirectory>src/main/docker</dockerDirectory>
 					<resources>
 						<resource>
